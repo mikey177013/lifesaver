@@ -42,14 +42,7 @@ In real-world emergencies, victims often:
 - Simulates SMS/email alerts for MVP (API-ready).  
 
 
-
-
-
-
-
----
-
-🧠 Key Highlights
+## 🧠 Key Highlights
 
 100% Individual Build
 
@@ -63,7 +56,7 @@ Designed for real-world usability
 
 
 
-🧾 How to Run Locally
+## 🧾 How to Run Locally
 
 # Clone repo
 git clone https://github.com/<your-username>/rescue-now.git
@@ -81,7 +74,7 @@ npm run dev
 
 ---
 
-🧠 Future Enhancements
+## 🧠 Future Enhancements
 
 SMS / WhatsApp API integration for real alerts
 
@@ -95,7 +88,7 @@ Volunteer responder network integration
 
 ---
 
-🏁 Submission Info
+## 🏁 Submission Info
 
 Hackathon: Emergent X TPF – Vibe Sprint 2
 Duration: 24 Oct – 9 Nov 2025
@@ -105,7 +98,7 @@ Theme: Open Innovation – Real-World Problem Solving
 
 ---
 
-📽️ Demo Video
+## 📽️ Demo Video
 
 
 
