@@ -2,6 +2,7 @@
 
 **Built for:** Emergent X TPF – Vibe Sprint 2  
 **By:** Piyush Gupta 
+
 **Email:** piyushguptaofficial07042009@gmail.com
 **Type:** Individual Hackathon Project  
 **Duration:** 24 Oct – 9 Nov 2025  
