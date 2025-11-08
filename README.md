@@ -20,7 +20,7 @@ Built using **Emergent.sh AI** and modern web technologies, RescueNow is lightwe
 
 ## 🚀 Live Demo
 
-🔗 **Try it here:** [RescueNow App](https://rescue-now.preview.emergentagent.com/)
+🔗 **Try it here:** [lifesaver](https://rescue-now.preview.emergentagent.com/)
 
 ---
 
@@ -102,7 +102,7 @@ Theme: Open Innovation – Real-World Problem Solving
 
 ## 📽️ Demo Video
 
-
+🔗 **Demo video:** [lifesaver demo video](https://drive.google.com/file/d/1qz-6ZVWUa-MDxkgp2CfcPxsuEtNm9hXQ/view?usp=drivesdk)
 
 1. Setting up contacts
 
