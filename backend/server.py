@@ -53,22 +53,44 @@ class EmergencyContact(BaseModel):
     name: str
     phone: str
     relationship: str
+    email: Optional[str] = None
     created_at: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
 
 class EmergencyContactCreate(BaseModel):
     name: str
     phone: str
     relationship: str
+    email: Optional[str] = None
 
 class SOSAlert(BaseModel):
     model_config = ConfigDict(extra="ignore")
     id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    user_name: str
     latitude: float
     longitude: float
     timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
     status: str = "active"
 
 class SOSAlertCreate(BaseModel):
+    user_name: str
+    latitude: float
+    longitude: float
+
+class Notification(BaseModel):
+    model_config = ConfigDict(extra="ignore")
+    id: str = Field(default_factory=lambda: str(uuid.uuid4()))
+    contact_phone: str
+    sender_name: str
+    message: str
+    latitude: float
+    longitude: float
+    timestamp: datetime = Field(default_factory=lambda: datetime.now(timezone.utc))
+    read: bool = False
+
+class NotificationCreate(BaseModel):
+    contact_phone: str
+    sender_name: str
+    message: str
     latitude: float
     longitude: float
 
@@ -177,6 +199,24 @@ async def create_sos_alert(input: SOSAlertCreate):
     doc['timestamp'] = doc['timestamp'].isoformat()
     
     await db.sos_alerts.insert_one(doc)
+    
+    # Create notifications for all emergency contacts
+    contacts = await db.emergency_contacts.find({}, {"_id": 0}).to_list(1000)
+    
+    for contact in contacts:
+        notification = Notification(
+            contact_phone=contact['phone'],
+            sender_name=input.user_name,
+            message=f"{input.user_name} needs help! Emergency alert triggered.",
+            latitude=input.latitude,
+            longitude=input.longitude
+        )
+        
+        notif_doc = notification.model_dump()
+        notif_doc['timestamp'] = notif_doc['timestamp'].isoformat()
+        
+        await db.notifications.insert_one(notif_doc)
+    
     return alert_obj
 
 @api_router.get("/sos-alerts", response_model=List[SOSAlert])
@@ -188,6 +228,37 @@ async def get_sos_alerts():
             alert['timestamp'] = datetime.fromisoformat(alert['timestamp'])
     
     return alerts
+
+# Notification Routes
+@api_router.get("/notifications/{phone}", response_model=List[Notification])
+async def get_notifications(phone: str):
+    notifications = await db.notifications.find(
+        {"contact_phone": phone}, 
+        {"_id": 0}
+    ).sort("timestamp", -1).to_list(100)
+    
+    for notif in notifications:
+        if isinstance(notif['timestamp'], str):
+            notif['timestamp'] = datetime.fromisoformat(notif['timestamp'])
+    
+    return notifications
+
+@api_router.put("/notifications/{notification_id}/read")
+async def mark_notification_read(notification_id: str):
+    result = await db.notifications.update_one(
+        {"id": notification_id},
+        {"$set": {"read": True}}
+    )
+    if result.modified_count == 0:
+        raise HTTPException(status_code=404, detail="Notification not found")
+    return {"message": "Notification marked as read"}
+
+@api_router.delete("/notifications/{notification_id}")
+async def delete_notification(notification_id: str):
+    result = await db.notifications.delete_one({"id": notification_id})
+    if result.deleted_count == 0:
+        raise HTTPException(status_code=404, detail="Notification not found")
+    return {"message": "Notification deleted"}
 
 # AI Chat Route
 @api_router.post("/chat", response_model=ChatResponse)
