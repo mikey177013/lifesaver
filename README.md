@@ -57,8 +57,8 @@ Designed for real-world usability
 
 
 ## 🧾 How to Run Locally
-
-# Clone repo
+```
+ Clone repo
 git clone https://github.com/<your-username>/rescue-now.git
 cd rescue-now
 
@@ -71,7 +71,7 @@ EMERGENT_API_KEY=your_key_here
 # Run development server
 npm run dev
 
-
+```
 ---
 
 ## 🧠 Future Enhancements
