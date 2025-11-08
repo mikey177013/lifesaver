@@ -1,4 +1,4 @@
-# 🚨 RescueNow — Instant Emergency Help Platform
+# 🚨 LifeSaver — Instant Emergency Help Platform
 
 **Built for:** Emergent X TPF – Vibe Sprint 2  
 **By:** Piyush Gupta 
@@ -127,3 +127,26 @@ Thanks to IIT BHU, Emergent, and TPF for organizing this amazing hackathon.
 
 
 ---
+
+## 📸 Screenshots
+
+<div align="center">
+  <table>
+    <tr>
+      <td align="center">
+        <img src="https://files.catbox.moe/8h058i.jpg" alt="Screenshot 1" width="300"/><br>
+        <em>Screenshot 1</em>
+      </td>
+      <td align="center">
+        <img src="https://files.catbox.moe/l29d5z.jpg" alt="Screenshot 2" width="300"/><br>
+        <em>Screenshot 2</em>
+      </td>
+    </tr>
+    <tr>
+      <td align="center" colspan="2">
+        <img src="https://files.catbox.moe/4m5ud7.jpg" alt="Screenshot 3" width="400"/><br>
+        <em>Screenshot 3</em>
+      </td>
+    </tr>
+  </table>
+</div>
