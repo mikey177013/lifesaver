@@ -9,7 +9,7 @@ from pydantic import BaseModel, Field, ConfigDict
 from typing import List, Optional
 import uuid
 from datetime import datetime, timezone
-from openai import AsyncOpenAI  # Replaced emergentintegrations with OpenAI
+from emergentintegrations.llm.chat import LlmChat, UserMessage
 
 ROOT_DIR = Path(__file__).parent
 load_dotenv(ROOT_DIR / '.env')
@@ -260,37 +260,24 @@ async def delete_notification(notification_id: str):
         raise HTTPException(status_code=404, detail="Notification not found")
     return {"message": "Notification deleted"}
 
-# AI Chat Route - UPDATED to use OpenAI directly
+# AI Chat Route
 @api_router.post("/chat", response_model=ChatResponse)
 async def chat_with_ai(input: ChatMessage):
     try:
-        api_key = os.environ.get('OPENAI_API_KEY')
+        api_key = os.environ.get('EMERGENT_LLM_KEY')
         if not api_key:
-            # Fallback to EMERGENT_LLM_KEY if OPENAI_API_KEY is not set
-            api_key = os.environ.get('EMERGENT_LLM_KEY')
-            if not api_key:
-                raise HTTPException(status_code=500, detail="OpenAI API key not configured")
+            raise HTTPException(status_code=500, detail="API key not configured")
 
-        openai_client = AsyncOpenAI(api_key=api_key)
-        
-        response = await openai_client.chat.completions.create(
-            model="gpt-4o-mini",
-            messages=[
-                {
-                    "role": "system", 
-                    "content": "You are LifeSaver AI, a calm and expert emergency responder. When the user describes a situation, give short, clear, step-by-step instructions. Be compassionate, precise, and safety-focused. Keep responses concise and actionable."
-                },
-                {
-                    "role": "user", 
-                    "content": input.message
-                }
-            ],
-            max_tokens=500,
-            temperature=0.7
-        )
-        
-        return ChatResponse(response=response.choices[0].message.content)
-        
+        chat = LlmChat(
+            api_key=api_key,
+            session_id="lifesaver-emergency",
+            system_message="You are LifeSaver AI, a calm and expert emergency responder. When the user describes a situation, give short, clear, step-by-step instructions. Be compassionate, precise, and safety-focused. Keep responses concise and actionable."
+        ).with_model("openai", "gpt-4o-mini")
+
+        user_message = UserMessage(text=input.message)
+        response = await chat.send_message(user_message)
+
+        return ChatResponse(response=response)
     except Exception as e:
         logging.error(f"Chat error: {str(e)}")
         raise HTTPException(status_code=500, detail=f"Chat service error: {str(e)}")
@@ -316,3 +303,5 @@ logger = logging.getLogger(__name__)
 @app.on_event("shutdown")
 async def shutdown_db_client():
     client.close()
+
+
