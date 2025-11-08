@@ -1,7 +1,8 @@
 # 🚨 RescueNow — Instant Emergency Help Platform
 
 **Built for:** Emergent X TPF – Vibe Sprint 2  
-**By:** [Your Name or Handle]  
+**By:** Piyush Gupta 
+**Email:** piyushguptaofficial07042009@gmail.com
 **Type:** Individual Hackathon Project  
 **Duration:** 24 Oct – 9 Nov 2025  
 
@@ -58,7 +59,7 @@ Designed for real-world usability
 
 ## 🧾 How to Run Locally
 ```
- Clone repo
+# Clone repo
 git clone https://github.com/<your-username>/rescue-now.git
 cd rescue-now
 
